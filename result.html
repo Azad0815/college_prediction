@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission Prediction - Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .prediction {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>College Admission Prediction - Result</h1>
+        <div class="result">
+            <p class="prediction">SVM Prediction: <span id="svmPrediction"></span></p>
+            <p class="prediction">Naive Bayes Prediction: <span id="naiveBayesPrediction"></span></p>
+            <p class="prediction">C50 Prediction: <span id="c50Prediction"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Retrieve prediction results from Flask and display them on the page
+        var svmPrediction = "{{ svm_prediction }}"; // Replace "{{ svm_prediction }}" with the actual prediction value
+        var naiveBayesPrediction = "{{ naive_bayes_prediction }}"; // Replace "{{ naive_bayes_prediction }}" with the actual prediction value
+        var c50Prediction = "{{ c50_prediction }}"; // Replace "{{ c50_prediction }}" with the actual prediction value
+
+        document.getElementById("svmPrediction").textContent = svmPrediction;
+        document.getElementById("naiveBayesPrediction").textContent = naiveBayesPrediction;
+        document.getElementById("c50Prediction").textContent = c50Prediction;
+    </script>
+</body>
+</html>

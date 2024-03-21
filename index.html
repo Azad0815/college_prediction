@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and title -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission Prediction</title>
+    
+    <!-- CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .greeting {
+            color: #28a745;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .datetime {
+            color: #dc3545;
+            font-size: 18px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header and form -->
+        <h1>College Admission Prediction</h1>
+        <div class="greeting">Namaste!</div>
+        <div class="datetime">
+            <span id="current-date"></span> | <span id="current-time"></span>
+        </div>
+        
+        <!-- Prediction form -->
+        <form id="predictionForm">
+            <label for="twelfth_score">12th Grade Score:</label>
+            <input type="number" id="twelfth_score" name="twelfth_score" required><br>
+
+            <label for="mhcet_score">MH CET Score:</label>
+            <input type="number" id="mhcet_score" name="mhcet_score" placeholder="Percentile"><br>
+
+            <label for="jee_score">JEE Score:</label>
+            <input type="number" id="jee_score" name="jee_score" placeholder="Percentile"><br>
+
+            <input type="submit" value="Predict"> <!-- Prediction Button -->
+        </form>
+        
+        <!-- Prediction result display -->
+        <div id="predictionResult"></div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Function to display current date and time
+        function displayDateTime() {
+            var now = new Date();
+            var currentDate = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            var currentTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+            document.getElementById('current-date').textContent = currentDate;
+            document.getElementById('current-time').textContent = currentTime;
+        }
+
+        // Function to handle form submission
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent the default form submission
+            var formData = new FormData(document.getElementById("predictionForm"));
+            predict(formData);
+        }
+
+        // Function to send prediction request to the server
+        function predict(formData) {
+            fetch('/', { // Assuming the Flask route is configured at '/'
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayPrediction(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to display prediction result
+        function displayPrediction(data) {
+            var resultDiv = document.getElementById("predictionResult");
+            resultDiv.innerHTML = `SVM Prediction: ${data.SVM_Prediction}<br>
+                                    Naive Bayes Prediction: ${data.Naive_Bayes_Prediction}<br>
+                                    C50 Prediction: ${data.C50_Prediction}`;
+        }
+
+        // Update date and time every second
+        setInterval(displayDateTime, 1000);
+
+        // Attach event listener to the form submission
+        document.getElementById("predictionForm").addEventListener("submit", handleSubmit);
+    </script>
+</body>
+</html>
